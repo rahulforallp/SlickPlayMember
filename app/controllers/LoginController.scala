@@ -6,23 +6,18 @@ import play.api.data.Forms._
 import play.api.mvc._
 import model._
 import play.api.i18n.Messages.Implicits._
-import play.api.Play.current
-import scala.concurrent.duration._
-
-import scala.concurrent.{Await, Future}
-
 /**
   * Created by knoldus on 8/3/16.
   */
 class LoginController @Inject()(service:MemberRepo) extends Controller{
-  val login=Form(
-    tuple(
+  val login:Form[Member]=Form(
+    mapping(
       "username"-> nonEmptyText,
       "password"-> nonEmptyText
-    )
+    )(Member.apply)(Member.unapply)
   )
 
-  def displayLogin = Action{ implicit request =>
+  def displayLogin = Action{
     Ok(views.html.login(login))
   }
 
