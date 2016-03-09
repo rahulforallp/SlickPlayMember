@@ -12,7 +12,17 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 
 GET     /displayLogin               controllers.LoginController.displayLogin
 
+POST    /processLogin               controllers.LoginController.processLogin
 
+GET     /awards                     controllers.UserController.displayAwards
+
+GET     /languages                  controllers.UserController.displayLanguages
+
+GET     /assignment                  controllers.UserController.displayAssignment
+
+GET     /programming                 controllers.UserController.displayProgramming
 
 # For WebJars
 GET     /webjars/*file              controllers.WebJarAssets.at(file)
+
+

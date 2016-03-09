@@ -21,8 +21,7 @@ class LoginController extends Controller{
     Ok(views.html.login(login))
   }
 
-  def processLogin=Action{
-
-    Ok
+  def processLogin=Action{ implicit request =>
+    Ok(views.html.user(""))
   }
 }
