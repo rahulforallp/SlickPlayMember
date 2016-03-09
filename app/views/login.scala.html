@@ -1,5 +1,5 @@
 @import model.Member
-@(login:Form[Member])(implicit message:Messages, flash:Flash)
+@(login:Form[(String,String)])(implicit message:Messages, flash:Flash)
 @implicitFC = @{ b3.horizontal.fieldConstructor("col-md-4", "col-md-8") }
 @main("Login page") {
 <div>
