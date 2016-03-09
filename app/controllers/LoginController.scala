@@ -6,6 +6,7 @@ import play.api.data.Forms._
 import play.api.mvc._
 import model._
 import play.api.i18n.Messages.Implicits._
+import play.api.Play.current
 /**
   * Created by knoldus on 8/3/16.
   */
@@ -17,7 +18,7 @@ class LoginController @Inject()(service:MemberRepo) extends Controller{
     )(Member.apply)(Member.unapply)
   )
 
-  def displayLogin = Action{
+  def displayLogin = Action{ implicit request =>
     Ok(views.html.login(login))
   }
 
