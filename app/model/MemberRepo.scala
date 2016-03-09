@@ -4,9 +4,8 @@ import javax.inject.{Inject, Singleton}
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.driver.JdbcProfile
 import slick.driver.PostgresDriver.api._
-import sun.security.util.Password
 import scala.concurrent.{Await, Future}
-import scala.concurrent.duration._
+
 
 @Singleton()
 class MemberRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
@@ -46,8 +45,5 @@ class MemberRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvide
   }
 
   lazy  val memberTableQuery = TableQuery[MemberTable]
-
-
-  //lazy protected val memberTableQueryInc = memberTableQuery returning memberTableQuery.map(_.username)
 
 }
