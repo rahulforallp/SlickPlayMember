@@ -7,6 +7,9 @@ import play.api.mvc._
 import model._
 import play.api.i18n.Messages.Implicits._
 import play.api.Play.current
+import play.api.libs.concurrent.Execution.Implicits._
+import scala.concurrent.Future
+
 /**
   * Created by knoldus on 8/3/16.
   */
@@ -14,7 +17,8 @@ class LoginController @Inject()(service:MemberRepo) extends Controller{
   val login:Form[Member]=Form(
     mapping(
       "username"-> nonEmptyText,
-      "password"-> nonEmptyText
+      "password"-> nonEmptyText,
+      "userType" -> text
     )(Member.apply)(Member.unapply)
   )
 
@@ -22,7 +26,15 @@ class LoginController @Inject()(service:MemberRepo) extends Controller{
     Ok(views.html.login(login))
   }
 
-  def processLogin=Action{ implicit request =>
-    Ok(views.html.user(""))
+  def processLogin = Action.async{ implicit request =>
+    login.bindFromRequest.fold(
+      badForm =>Future {Redirect("/displayLogin")},
+      data => service.getMember(data.username, data.password).map {
+        mem => mem.isDefined match {
+          case true => Ok(views.html.user(""))
+          case false => Redirect("/displayLogin")
+        }
+      }
+    )
   }
 }
