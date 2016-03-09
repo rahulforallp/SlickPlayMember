@@ -1,4 +1,4 @@
-package model
+package model.connection
 
 import slick.driver.JdbcProfile
 

@@ -16,7 +16,7 @@ libraryDependencies ++= Seq(
   "com.adrianhurt" %% "play-bootstrap" % "1.0-P24-B3-SNAPSHOT",
   "org.webjars" %% "webjars-play" % "2.4.0-1",
   "org.webjars" % "bootstrap" % "3.1.1-2",
-  "mysql" % "mysql-connector-java" % "5.1.36",
+  "org.postgresql" % "postgresql" % "9.4-1206-jdbc4",
   "com.typesafe.play" %% "play-slick" % "1.1.1",
   "com.typesafe.slick"  %%     "slick-hikaricp"           %      "3.1.1",
   "ch.qos.logback"       %     "logback-classic"          %      "1.1.3",
