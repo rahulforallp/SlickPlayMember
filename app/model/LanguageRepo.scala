@@ -29,8 +29,8 @@ class LanguageRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvi
     db.run {languageTableQuery.filter(_.id === lang.id).update(lang)}
   }
 
-  def delete(lang: Language):Future[Int]={
-    db.run {languageTableQuery.filter(_.id === lang.id).delete}
+  def delete(id: Int):Future[Int]={
+    db.run {languageTableQuery.filter(_.id === id).delete}
   }
 
   def getLanguage(username:String):Future[List[Language]] = {

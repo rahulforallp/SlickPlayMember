@@ -28,8 +28,8 @@ class AwardRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvider
     db.run {awardTableQuery.filter(_.id === award.id).update(award)}
   }
 
-  def delete(award:Award):Future[Int]={
-    db.run {awardTableQuery.filter(_.id === award.id).delete}
+  def delete(id:Int):Future[Int]={
+    db.run {awardTableQuery.filter(_.id === id).delete}
   }
 
   def getAward(username:Option[String]):Future[List[Award]] = {
