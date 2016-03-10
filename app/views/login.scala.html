@@ -14,7 +14,7 @@
             @if(flash.get("failure").isDefined){
             @flash.get("failure")}
         </p>
-        <span>@b3.text(login("email"),'_label -> "Email",'type -> "password")</span>
+        <span>@b3.text(login("username"),'_label -> "Email")</span>
         <span>@b3.password(login("password"),'_label -> "Password")</span>
 
         <button type="submit" class="btn btn-primary" value="search">Submit!!</button>
