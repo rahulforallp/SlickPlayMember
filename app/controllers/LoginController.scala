@@ -17,8 +17,7 @@ class LoginController @Inject()(service:MemberRepo) extends Controller{
   val login:Form[Member]=Form(
     mapping(
       "username"-> nonEmptyText,
-      "password"-> nonEmptyText,
-      "userType" -> text
+      "password"-> nonEmptyText
     )(Member.apply)(Member.unapply)
   )
 
@@ -28,10 +27,10 @@ class LoginController @Inject()(service:MemberRepo) extends Controller{
 
   def processLogin = Action.async{ implicit request =>
     login.bindFromRequest.fold(
-      badForm =>Future {Redirect("/displayLogin")},
+      badForm =>Future {Ok("error")},
       data => service.getMember(data.username, data.password).map {
         mem => mem.isDefined match {
-          case true => Ok(views.html.user(""))
+          case true => Ok(views.html.user("")).withSession("username"->data.username)
           case false => Redirect("/displayLogin")
         }
       }

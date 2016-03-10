@@ -1,4 +1,8 @@
+@import model.Award
+@(awardList:List[Award])
 @main("Awards Form") {
+<div class="col-md-3"></div>
+<div class="col-md-7">
     <table class="table table-striped">
         <thead>
         <tr>
@@ -6,22 +10,26 @@
             <th>Award Name</th>
             <th>Year</th>
             <th></th>
-            <th> <button class="btn btn-primary" data-toggle="modal" data-target="#add">
+            <th> <button class="btn btn-primary" data-toggle="modal" data-target="#add"
+                         style="height:25px">
                 Add
             </button></th>
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>1</td>
-            <td>Debate Runner up</td>
-            <td>2014</td>
-            <td> <button class="btn btn-primary" data-toggle="modal" data-target="#edit">
+        <tr>@for(award <- awardList){
+            <td>@award.id</td>
+            <td>@award.name</td>
+            <td>@award.year</td>
+            <td> <button class="btn btn-primary" data-toggle="modal" data-target="#edit" >
                Edit
             </button></td>
+
         </tr>
+        }
         </tbody>
     </table>
+</div>
 
 
 
