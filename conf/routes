@@ -16,6 +16,10 @@ POST    /processLogin               controllers.LoginController.processLogin
 
 GET     /awards                     controllers.UserController.displayAwards
 
+GET     /singleAward/:id            controllers.UserController.displayAwardById(id:Int)
+
+POST    /awards/:id/serlno/name/description/year    controllers.UserController.addAward(id:Int,serlno,name,description,year)
+
 GET     /languages                  controllers.UserController.displayLanguages
 
 GET     /assignment                  controllers.UserController.displayAssignment

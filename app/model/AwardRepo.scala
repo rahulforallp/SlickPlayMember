@@ -38,6 +38,13 @@ class AwardRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvider
       awardTableQuery.filter(_.username===username).to[List].result
     }
   }
+
+  def getAwardById(id:Int):Future[List[Award]] = {
+
+    db.run{
+      awardTableQuery.filter(_.id===id).to[List].result
+    }
+  }
 }
 
 trait AwardTable  { self: HasDatabaseConfigProvider[JdbcProfile] =>

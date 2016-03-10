@@ -21,7 +21,7 @@
             <td>@award.id</td>
             <td>@award.name</td>
             <td>@award.year</td>
-            <td> <button class="btn btn-primary" data-toggle="modal" data-target="#edit" >
+            <td> <button class="btn btn-default editButton"  data-id=@award.id data-toggle="modal" data-target="#edit" >
                Edit
             </button></td>
 
@@ -43,22 +43,18 @@
             <h4 class="modal-title">Award Edit</h4>
         </div>
         <div class="modal-content" style="height:300px;text-align:center;">
-            <form style="margin-top:20px;">
+            <form id="userForm" style="margin-top:20px;">
                 <div>
                     <label>Award Id</label>
-                    <input type="text" readonly>
+                    <input type="text" name="id" readonly>
                     <br>
                     <br>
                     <label>Award Name</label>
-                    <input type="text">
-                    <br>
-                    <br>
-                    <label>Description</label>
-                    <input type="text">
+                    <input type="text" name="name">
                     <br>
                     <br>
                     <label>Year</label>
-                    <input type="text">
+                    <input type="text" name="year">
                 </div>
                 <div style="display:inline;">
                     <button class="btn btn-primary" type="submit" style="padding:10px">Save</button>
@@ -82,25 +78,44 @@
             <form style="margin-top:20px;">
                 <div>
                     <label>Award Id</label>
-                    <input type="text">
+                    <input type="text" name="id">
                     <br>
                     <br>
                     <label>Award Name</label>
-                    <input type="text">
+                    <input type="text" name="name">
+                    <br>
+                    <br>
+                    <label>Award Serial</label>
+                    <input type="text" name="serlno">
                     <br>
                     <br>
                     <label>Description</label>
-                    <input type="text">
+                    <input type="text" name="desc">
                     <br>
                     <br>
                     <label>Year</label>
-                    <input type="text">
+                    <input type="text" name="year">
                 </div>
                 <div style="display:inline;">
-                    <button class="btn btn-primary" type="submit" style="padding:10px">Save</button>
+                    <button class="btn btn-primary" type="submit" style="padding:10px" id="newsave">Save</button>
                     <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
                 </div>
             </form>
+            <script>
+                $("#newsave").click(function(){
+
+                $.post("/addAward",
+                {
+                id:$('input[name=id]').val(),
+                serlno:$('input[name=serlno]').val(),
+                name:$('input[name=name]').val(),
+                description:$('input[name=desc]').val(),
+                year:$('input[name=year]').val(),
+
+});
+});
+
+            </script>
 
         </div>
 
@@ -109,3 +124,5 @@
 </div>
 
 }
+
+

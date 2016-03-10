@@ -12,6 +12,6 @@ import play.api.Play.current
 /**
   * Created by knoldus on 10/3/16.
   */
-class LanguageController @Inject()(service:AwardRepo) extends Controller{ {
+class LanguageController @Inject()(service:AwardRepo) extends Controller{
 
 }
