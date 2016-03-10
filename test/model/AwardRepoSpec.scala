@@ -10,7 +10,7 @@ import scala.concurrent.Await
   * Created by knoldus on 9/3/16.
   */
 class AwardRepoSpec extends Specification {
-  "Member repository" should {
+  "Award repository" should {
 
     def awrdRepo(implicit app: Application) = Application.instanceCache[AwardRepo].apply(app)
 
@@ -18,6 +18,22 @@ class AwardRepoSpec extends Specification {
       val result = Await.result(awrdRepo.insert(Award(1,"rahul", "co81", "Code Olympic", "First","2015")), 2 second)
       result === 1
     }
+
+    "update single row" in new WithApplication {
+      val result = Await.result(awrdRepo.update(Award(1,"rahul", "Do81", "Code Olympic", "First","2016")), 2 second)
+      result === 1
+    }
+
+    "delete single row" in new WithApplication {
+      val result = Await.result(awrdRepo.delete(1), 2 second)
+      result === 1
+    }
+
+    "get all row" in new WithApplication {
+      val result = Await.result(awrdRepo.getAward(Some("rahul")), 2 second)
+      result === 1
+    }
+
   }
 
 
