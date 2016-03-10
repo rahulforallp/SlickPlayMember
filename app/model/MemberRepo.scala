@@ -38,10 +38,10 @@ class MemberRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvide
   protected class MemberTable(tag: Tag) extends Table[Member](tag, "member") {
     val username: Rep[String] = column[String]("username", O.SqlType("VARCHAR(200)"),O.PrimaryKey)
     val password: Rep[String] = column[String]("password", O.SqlType("VARCHAR(200)"))
-    val usertype: Rep[String] = column[String]("usertype",O.SqlType("VARCHAR(200)"))
-    val name: Rep[String] = column[String]("name",O.SqlType("VARCHAR(200)"))
+    //val usertype: Rep[String] = column[String]("usertype",O.SqlType("VARCHAR(200)"))
 
-    def * = (username, password, usertype, name) <> (Member.tupled, Member.unapply)
+
+    def * = (username, password) <> (Member.tupled, Member.unapply)
   }
 
   lazy  val memberTableQuery = TableQuery[MemberTable]
