@@ -18,13 +18,17 @@ GET     /awards                     controllers.UserController.displayAwards
 
 GET     /singleAward/:id            controllers.UserController.displayAwardById(id:Int)
 
-POST    /awards/:id/serlno/name/description/year    controllers.UserController.addAward(id:Int,serlno,name,description,year)
+GET     /addAward                   controllers.UserController.addAward
 
-GET     /languages                  controllers.UserController.displayLanguages
+#POST    /awards/:id/serlno/name/description/year    controllers.UserController.addAward(id:Int,serlno,name,description,year)
 
-GET     /assignment                  controllers.UserController.displayAssignment
+GET     /languages                  controllers.LanguageController.displayLanguages
 
-GET     /programming                 controllers.UserController.displayProgramming
+GET     /assignment                  controllers.AssignmentController.displayAssignment
+
+GET     /programming                 controllers.ProgrammingLanguageController.displayProgrammingLanguages
+
+#GET   /ajax-call          controllers.LoginController.ajaxCall
 
 # For WebJars
 GET     /webjars/*file              controllers.WebJarAssets.at(file)

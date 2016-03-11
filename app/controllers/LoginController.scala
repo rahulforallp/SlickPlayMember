@@ -30,10 +30,13 @@ class LoginController @Inject()(service:MemberRepo) extends Controller{
       badForm =>Future {Ok("error")},
       data => service.getMember(data.username, data.password).map {
         mem => mem.isDefined match {
+
           case true => Ok(views.html.user("")).withSession("username"->data.username)
           case false => Redirect("/displayLogin")
         }
       }
     )
   }
+
+
 }

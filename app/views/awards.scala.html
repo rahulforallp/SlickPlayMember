@@ -1,6 +1,18 @@
 @import model.Award
-@(awardList:List[Award])
+@(awardList:List[Award],addAwardForm:Form[Award])(implicit message:Messages, flash:Flash)
+@implicitFC = @{ b3.horizontal.fieldConstructor("col-md-4", "col-md-8") }
 @main("Awards Form") {
+<div class="row">
+    <div class="col-md-1"></div>
+    <ul class="nav nav-tabs">
+        <li><a href="#">Home</a></li>
+        <li><a href="awards">Award</a></li>
+        <li><a href="languages">Languages known</a></li>
+        <li><a href="assignment">Assignment</a></li>
+        <li><a href="programming">Programming</a></li>
+        <li><a href="#">Intern</a></li>
+    </ul>
+</div>
 <div class="col-md-3"></div>
 <div class="col-md-7">
     <table class="table table-striped">
@@ -75,47 +87,37 @@
             <h4 class="modal-title">Award Add</h4>
         </div>
         <div class="modal-content" style="height:300px;text-align:center;">
-            <form style="margin-top:20px;">
-                <div>
-                    <label>Award Id</label>
-                    <input type="text" name="id">
-                    <br>
-                    <br>
-                    <label>Award Name</label>
-                    <input type="text" name="name">
-                    <br>
-                    <br>
-                    <label>Award Serial</label>
-                    <input type="text" name="serlno">
-                    <br>
-                    <br>
-                    <label>Description</label>
-                    <input type="text" name="desc">
-                    <br>
-                    <br>
-                    <label>Year</label>
-                    <input type="text" name="year">
-                </div>
-                <div style="display:inline;">
-                    <button class="btn btn-primary" type="submit" style="padding:10px" id="newsave">Save</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-                </div>
-            </form>
+            @b3.form(action=routes.UserController.addAward,'id-> "addForm") {
+            <div>
+                <span>@b3.text(addAwardForm("id"),'_label -> "ID")</span>
+                <span>@b3.text(addAwardForm("serialNo"),'_label -> "Serial No.")</span>
+                <span>@b3.text(addAwardForm("name"),'_label -> "Name")</span>
+                <span>@b3.text(addAwardForm("description"),'_label -> "Description")</span>
+                <span>@b3.text(addAwardForm("year"),'_label -> "Year")</span>
+}
+            </div>
+            <button class="btn btn-primary" type="submit" style="padding:10px" id="newsave">Save</button>
+            }
             <script>
                 $("#newsave").click(function(){
+                formdata=$("#addForm").serialize()
+                 alert(""+formdata)
+                $.ajax({
 
-                $.post("/addAward",
-                {
-                id:$('input[name=id]').val(),
-                serlno:$('input[name=serlno]').val(),
-                name:$('input[name=name]').val(),
-                description:$('input[name=desc]').val(),
-                year:$('input[name=year]').val(),
-
-});
-});
+                type:"POST",
+                url:"/addAward",
+                data:formdata
+                });
+                });
 
             </script>
+
+                <div style="display:inline;">
+
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+
+
 
         </div>
 
@@ -123,6 +125,5 @@
 
 </div>
 
-}
 
 

@@ -1,4 +1,19 @@
-@main("Awards Form") {
+@import model.ProgrammingLanguage
+@(languageList:List[ProgrammingLanguage])
+@main("Programming Language Form") {
+<div class="row">
+    <div class="col-md-1"></div>
+    <ul class="nav nav-tabs">
+        <li><a href="#">Home</a></li>
+        <li><a href="awards">Award</a></li>
+        <li><a href="languages">Languages known</a></li>
+        <li><a href="assignment">Assignment</a></li>
+        <li><a href="programming">Programming</a></li>
+        <li><a href="#">Intern</a></li>
+    </ul>
+</div>
+<div class="col-md-3"></div>
+<div class="col-md-7">
 <table class="table table-striped">
     <thead>
     <tr>
@@ -12,16 +27,19 @@
     </tr>
     </thead>
     <tbody>
-    <tr>
-        <td>1</td>
-        <td>Scala Programming Language</td>
-        <td>Good</td>
-        <td> <button class="btn btn-primary" data-toggle="modal" data-target="#edit">
+    <tr>@for(language <- languageList){
+        <td>@language.id</td>
+        <td>@language.name</td>
+        <td>@language.frequency</td>
+        <td> <button class="btn btn-default editButton"  data-id=@language.id data-toggle="modal" data-target="#edit" >
             Edit
         </button></td>
+
     </tr>
+    }
     </tbody>
 </table>
+    </div>
 
 <div class="modal fade" id="edit" role="dialog">
     <div class="modal-dialog">

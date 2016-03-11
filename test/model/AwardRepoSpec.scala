@@ -30,7 +30,7 @@ class AwardRepoSpec extends Specification {
     }
 
     "get all row" in new WithApplication {
-      val result = Await.result(awrdRepo.getAward(Some("rahul")), 2 second)
+      val result = Await.result(awrdRepo.getAward(("rahul")), 2 second)
       result === 1
     }
 
