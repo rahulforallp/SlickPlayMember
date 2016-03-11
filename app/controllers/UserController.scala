@@ -44,10 +44,22 @@ class UserController @Inject()(service:AwardRepo) extends Controller{
     }
   }
 
-  def addAward=Action{
+  def addAward=Action.async{
     implicit request =>
       awardForm.bindFromRequest.fold(
-        badForm => Ok("Error"),
-        data => Ok("inserted"))
+        badForm =>Future{ Ok("Error"+badForm)},
+        data =>{
+          val user:Option[String] =  request.session.get("username")
+          val id=data.id
+          val name=data.name
+          val serialNo =data.serialNo
+          val desc =data.description
+          val year= data.year
+          val award= Award(id,user.get,serialNo,name,desc,year)
+          val res = service.insert(award)
+          res.map{
+            r => if(r==1) Redirect("/awards") else Ok("Bye")
+          }
+        })
   }
 }

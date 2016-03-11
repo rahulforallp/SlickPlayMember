@@ -18,11 +18,15 @@ GET     /awards                     controllers.UserController.displayAwards
 
 GET     /singleAward/:id            controllers.UserController.displayAwardById(id:Int)
 
-GET     /addAward                   controllers.UserController.addAward
+POST     /addAward                controllers.UserController.addAward
 
 #POST    /awards/:id/serlno/name/description/year    controllers.UserController.addAward(id:Int,serlno,name,description,year)
 
 GET     /languages                  controllers.LanguageController.displayLanguages
+
+GET     /addLanguage                controllers.LanguageController.addLanguage
+
+GET     /addProgrammingLanguage     controllers.ProgrammingLanguageController.addProgrammingLanguage
 
 GET     /assignment                  controllers.AssignmentController.displayAssignment
 

@@ -1,5 +1,6 @@
 @import model.Language
-@(languageList:List[Language])
+@(languageList:List[Language],languageForm:Form[Language])(implicit message:Messages, session:Session, flash:Flash))
+@implicitFC = @{ b3.horizontal.fieldConstructor("col-md-4", "col-md-8") }
 @main("Language Form") {
 <div class="row">
     <div class="col-md-1"></div>
@@ -80,24 +81,20 @@
             <h4 class="modal-title">Language Edit</h4>
         </div>
         <div class="modal-content" style="height:300px;text-align:center;">
-            <form>
-                <div>
-                    <label>Id</label>
-                    <input type="text">
-                    <br>
-                    <br>
-                    <label>Language Known</label>
-                    <input type="text">
-                    <br>
-                    <br>
-                    <label>Frequency</label>
-                    <input type="text">
-                </div>
-                <div style="display:inline;">
-                    <button class="btn btn-primary" type="submit" style="padding:10px">Save</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-                </div>
-            </form>
+            @b3.form(action=routes.LanguageController.addLanguage(),'id-> "addForm") {
+            <div>
+
+                <span>@b3.text(languageForm("username"),'_label -> "",'id -> "user", 'value ->session.get("username"),'style -> "display:none")</span>
+                <span>@b3.text(languageForm("id"),'_label -> "ID",'id -> "id")</span>
+                <span>@b3.text(languageForm("name"),'_label -> "Name")</span>
+                <span>@b3.text(languageForm("frequency"),'_label -> "Frequency")</span>
+
+            </div>
+            <button class="btn btn-primary" type="submit" style="padding:10px" id="newsave">Save</button>
+            }
+            }
+
+
 
         </div>
 
@@ -107,4 +104,3 @@
 
 
 
-}

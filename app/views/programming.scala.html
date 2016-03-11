@@ -1,5 +1,6 @@
 @import model.ProgrammingLanguage
-@(languageList:List[ProgrammingLanguage])
+@(languageList:List[ProgrammingLanguage],programmingLanguageForm:Form[ProgrammingLanguage])(implicit message:Messages, session:Session, flash:Flash)
+@implicitFC = @{ b3.horizontal.fieldConstructor("col-md-4", "col-md-8") }
 @main("Programming Language Form") {
 <div class="row">
     <div class="col-md-1"></div>
@@ -81,29 +82,16 @@
             <h4 class="modal-title">Programming Language Add</h4>
         </div>
         <div class="modal-content" style="height:300px;text-align:center;">
-            <form>
-                <div>
-                    <label>Id</label>
-                    <input type="text">
-                    <br>
-                    <br>
-                    <label>Language name</label>
-                    <input type="text">
-                    <br>
-                    <br>
-                    <label>Frequency</label>
-                    <input type="text">
-                </div>
-                <div style="display:inline;">
-                    <button class="btn btn-primary" type="submit" style="padding:10px">Save</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-                </div>
-            </form>
-
+            @b3.form(action=routes.ProgrammingLanguageController.addProgrammingLanguage(),'id-> "addForm") {
+            <div>
+                <span>@b3.text(programmingLanguageForm("username"),'_label -> "",'id -> "user", 'value ->session.get("username"),'style -> "display:none")</span>
+                <span>@b3.text(programmingLanguageForm("id"),'_label -> "ID",'id -> "id")</span>
+                <span>@b3.text(programmingLanguageForm("name"),'_label -> "Name")</span>
+                <span>@b3.text(programmingLanguageForm("frequency"),'_label -> "Frequency")</span>
+            </div>
+            <button class="btn btn-primary" type="submit" style="padding:10px" id="newsave">Save</button>
+            }
+            }
         </div>
-
     </div>
-
 </div>
-
-}

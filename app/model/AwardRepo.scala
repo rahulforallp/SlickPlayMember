@@ -32,7 +32,7 @@ class AwardRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvider
     db.run {awardTableQuery.filter(_.id === id).delete}
   }
 
-  def getAward(username:String):Future[List[Award]] = {
+  def getAward(username:String ):Future[List[Award]] = {
 
     db.run{
       awardTableQuery.filter(_.username===username).to[List].result
@@ -52,7 +52,7 @@ trait AwardTable  { self: HasDatabaseConfigProvider[JdbcProfile] =>
   import driver.api._
 
   protected class AwardTable(tag: Tag) extends Table[Award](tag, "award") {
-    val id: Rep[Int] = column[Int]("id", O.AutoInc,O.PrimaryKey)
+    val id: Rep[Int] = column[Int]("id",O.PrimaryKey)
     val username: Rep[String] = column[String]("username", O.SqlType("VARCHAR(200)"))
     val serialNo: Rep[String] = column[String]("serlno",O.SqlType("VARCHAR(25)"))
     val name: Rep[String] = column[String]("name",O.SqlType("VARCHAR(200)"))

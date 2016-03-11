@@ -1,5 +1,5 @@
 @import model.Award
-@(awardList:List[Award],addAwardForm:Form[Award])(implicit message:Messages, flash:Flash)
+@(awardList:List[Award],awardForm:Form[Award])(implicit message:Messages, session:Session, flash:Flash)
 @implicitFC = @{ b3.horizontal.fieldConstructor("col-md-4", "col-md-8") }
 @main("Awards Form") {
 <div class="row">
@@ -33,7 +33,7 @@
             <td>@award.id</td>
             <td>@award.name</td>
             <td>@award.year</td>
-            <td> <button class="btn btn-default editButton"  data-id=@award.id data-toggle="modal" data-target="#edit" >
+            <td> <button class="btn btn-default editButton"  value=@award.id data-toggle="modal" data-target="#edit" >
                Edit
             </button></td>
 
@@ -41,6 +41,7 @@
         }
         </tbody>
     </table>
+
 </div>
 
 
@@ -87,35 +88,20 @@
             <h4 class="modal-title">Award Add</h4>
         </div>
         <div class="modal-content" style="height:300px;text-align:center;">
-            @b3.form(action=routes.UserController.addAward,'id-> "addForm") {
+            @b3.form(action=routes.UserController.addAward(),'id-> "addForm") {
             <div>
-                <span>@b3.text(addAwardForm("id"),'_label -> "ID")</span>
-                <span>@b3.text(addAwardForm("serialNo"),'_label -> "Serial No.")</span>
-                <span>@b3.text(addAwardForm("name"),'_label -> "Name")</span>
-                <span>@b3.text(addAwardForm("description"),'_label -> "Description")</span>
-                <span>@b3.text(addAwardForm("year"),'_label -> "Year")</span>
-}
+
+                <span>@b3.text(awardForm("username"),'_label -> "",'id -> "user", 'value ->session.get("username"),'style -> "display:none")</span>
+                <span>@b3.text(awardForm("id"),'_label -> "ID",'id -> "id")</span>
+                <span>@b3.text(awardForm("serialNo"),'_label -> "Serial No.")</span>
+                <span>@b3.text(awardForm("name"),'_label -> "Name")</span>
+                <span>@b3.text(awardForm("description"),'_label -> "Description")</span>
+                <span>@b3.text(awardForm("year"),'_label -> "Year")</span>
+
             </div>
             <button class="btn btn-primary" type="submit" style="padding:10px" id="newsave">Save</button>
             }
-            <script>
-                $("#newsave").click(function(){
-                formdata=$("#addForm").serialize()
-                 alert(""+formdata)
-                $.ajax({
-
-                type:"POST",
-                url:"/addAward",
-                data:formdata
-                });
-                });
-
-            </script>
-
-                <div style="display:inline;">
-
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-                </div>
+            }
 
 
 

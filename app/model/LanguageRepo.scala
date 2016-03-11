@@ -47,7 +47,7 @@ trait LanguageTable  { self: HasDatabaseConfigProvider[JdbcProfile] =>
   import driver.api._
 
   protected class LanguageTable(tag: Tag) extends Table[Language](tag, "language") {
-    val id: Rep[Int] = column[Int]("id", O.AutoInc,O.PrimaryKey)
+    val id: Rep[Int] = column[Int]("id",O.PrimaryKey)
     val username: Rep[String] = column[String]("username", O.SqlType("VARCHAR(200)"))
     val name: Rep[String] = column[String]("name", O.SqlType("VARCHAR(200)"))
     val frequency: Rep[String] = column[String]("frequency",O.SqlType("VARCHAR(200)"))
