@@ -19,10 +19,12 @@
         <thead>
         <tr>
             <th>Award Id</th>
+            <th>Award Serial No.</th>
             <th>Award Name</th>
-            <th>Year</th>
+            <th>Award Description</th>
+            <th>Award Year</th>
             <th></th>
-            <th> <button class="btn btn-primary" data-toggle="modal" data-target="#add"
+            <th> <button class="btn btn-primary" data-toggle="modal" data-target="#addAwa"
                          style="height:25px">
                 Add
             </button></th>
@@ -31,9 +33,11 @@
         <tbody>
         <tr>@for(award <- awardList){
             <td>@award.id</td>
+            <td>@award.serialNo</td>
             <td>@award.name</td>
+            <td>@award.description</td>
             <td>@award.year</td>
-            <td> <button class="btn btn-default editButton"  value=@award.id data-toggle="modal" data-target="#edit" >
+            <td> <button class="btn btn-default editButton"  data-id="@award.id" data-toggle="modal" data-target="#editAwa" >
                Edit
             </button></td>
 
@@ -49,31 +53,26 @@
 
 
 
-<div class="modal fade" id="edit" role="dialog">
+<div class="modal fade" id="editAwa" role="dialog">
     <div class="modal-dialog">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
             <h4 class="modal-title">Award Edit</h4>
         </div>
         <div class="modal-content" style="height:300px;text-align:center;">
-            <form id="userForm" style="margin-top:20px;">
-                <div>
-                    <label>Award Id</label>
-                    <input type="text" name="id" readonly>
-                    <br>
-                    <br>
-                    <label>Award Name</label>
-                    <input type="text" name="name">
-                    <br>
-                    <br>
-                    <label>Year</label>
-                    <input type="text" name="year">
-                </div>
-                <div style="display:inline;">
-                    <button class="btn btn-primary" type="submit" style="padding:10px">Save</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-                </div>
-            </form>
+            @b3.form(action=routes.UserController.editAward(),'id-> "editForm") {
+            <div>
+
+                <span>@b3.text(awardForm("username"),'_label -> "",'id -> "user", 'value ->session.get("username"),'style -> "display:none")</span>
+                <span>@b3.text(awardForm("id"),'_label -> "ID",'id -> "id", 'readonly -> "true")</span>
+                <span>@b3.text(awardForm("serialNo"),'_label -> "Serial No.", 'id ->"serialNo")</span>
+                <span>@b3.text(awardForm("name"),'_label -> "Name", 'id -> "name")</span>
+                <span>@b3.text(awardForm("description"),'_label -> "Description", 'id -> "description")</span>
+                <span>@b3.text(awardForm("year"),'_label -> "Year", 'id -> "year")</span>
+
+            </div>
+            <button class="btn btn-primary" type="submit" style="padding:10px" id="editsave">Save</button>
+            }
 
         </div>
 
@@ -81,7 +80,7 @@
 
 </div>
 
-<div class="modal fade" id="add" role="dialog">
+<div class="modal fade" id="addAwa" role="dialog">
     <div class="modal-dialog">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -101,7 +100,7 @@
             </div>
             <button class="btn btn-primary" type="submit" style="padding:10px" id="newsave">Save</button>
             }
-            }
+
 
 
 
@@ -110,6 +109,56 @@
     </div>
 
 </div>
+
+<script>
+
+    $(".editButton").click(function(){
+    var id=$(this).attr('data-id');
+    $.get("getAwardById/"+id, function(data,status){
+    $("#id").val(data.id);
+    $("#serialNo").val(data.serialNo);
+    $("#name").val(data.name);
+    $("#description").val(data.description);
+    $("#year").val(data.year);
+    });
+    });
+
+    $("#editForm").submit(function(event){
+    event.preventDefault();
+    var values= $("#editForm").serialize();
+    $.ajax({
+    url:"editAward",
+    type:"GET",
+    data:values,
+    success:function(data){
+    $("#editAwa").modal('hide');
+     window.location.reload();
+     }
+    });
+    });
+
+     $("#addForm").submit(function(event){
+    event.preventDefault();
+    var values = $(this).serialize();
+    $.ajax({
+    url:"addAward",
+    type:"GET",
+    data:values,
+    success:function(data){
+    $("#addAwa").modal('hide');
+    window.location.reload();
+    },
+    error:function(data,status){
+    console.log(status);
+    }
+    });
+    });
+
+
+
+</script>
+
+}
 
 
 

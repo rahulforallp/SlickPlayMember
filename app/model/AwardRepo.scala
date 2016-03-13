@@ -39,10 +39,10 @@ class AwardRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvider
     }
   }
 
-  def getAwardById(id:Int):Future[List[Award]] = {
+  def getAwardById(id:Int):Future[Option[Award]] = {
 
     db.run{
-      awardTableQuery.filter(_.id===id).to[List].result
+      awardTableQuery.filter(_.id===id).result.headOption
     }
   }
 }

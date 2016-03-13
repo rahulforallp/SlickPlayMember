@@ -1,10 +1,13 @@
 package model
 
 import javax.inject.{Inject, Singleton}
+import org.postgresql.util.PSQLException
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.driver.JdbcProfile
 import slick.driver.PostgresDriver.api._
-import scala.concurrent.{Await, Future}
+import scala.concurrent.{ Future}
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.util.{Failure, Success, Try}
 
 /**
   * Created by knoldus on 10/3/16.
@@ -19,14 +22,20 @@ class ProgrammingLanguageRepo @Inject()(protected val dbConfigProvider: Database
 
   }
 
-  def insert(lang: ProgrammingLanguage):Future[Int] = {
-    db.run {
-      pLanguageTableQuery += lang
-    }
+  def insert(lang: ProgrammingLanguage):Future[Int] =  {
+
+      db.run((pLanguageTableQuery += lang).asTry).map(result =>
+      result match {
+        case Success(res) => res
+        case Failure(e:PSQLException) => 0
+        case Failure(e) => 0
+      })
+
+
   }
 
   def update(lang: ProgrammingLanguage):Future[Int]={
-    db.run {pLanguageTableQuery.filter(_.id === lang.id).update(lang)}
+    db.run {pLanguageTableQuery.filter(_.id === lang.id).map(x => (x.name,x.frequency)).update((lang.name,lang.frequency))}
   }
 
   def delete(id:Int):Future[Int]={
@@ -37,6 +46,12 @@ class ProgrammingLanguageRepo @Inject()(protected val dbConfigProvider: Database
 
     db.run{
       pLanguageTableQuery.filter(_.username===username).to[List].result
+    }
+  }
+
+  def getLanguageById(id:Int):Future[Option[ProgrammingLanguage]] ={
+    db.run{
+      pLanguageTableQuery.filter(_.id===id).result.headOption
     }
   }
 }

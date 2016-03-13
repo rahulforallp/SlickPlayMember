@@ -1,8 +1,10 @@
 package controllers
 
 import com.google.inject.Inject
+import org.postgresql.util.PSQLException
 import play.api.data.Form
 import play.api.data.Forms._
+import play.api.libs.json.Json
 import play.api.mvc._
 import model.{Language, ProgrammingLanguage, ProgrammingLanguageRepo}
 import play.api.i18n.Messages.Implicits._
@@ -29,7 +31,7 @@ class ProgrammingLanguageController @Inject()(service:ProgrammingLanguageRepo) e
     val user: Option[String] = request.session.get("username")
     val programmingLanguageList = service.getLanguage(user.get)
     programmingLanguageList.map { planguage =>
-      Ok(views.html.programming(planguage,programmingLanguageForm))
+      Ok(views.html.programming(planguage.sortBy(_.id),programmingLanguageForm))
     }
   }
 
@@ -45,9 +47,39 @@ class ProgrammingLanguageController @Inject()(service:ProgrammingLanguageRepo) e
           val frequency =data.frequency
           val language= ProgrammingLanguage(id,user.get,name,frequency)
           val res = service.insert(language)
+            res.map {
+              r => if (r == 1) Redirect("/programming") else Redirect("/programming").flashing("error" -> "Duplicate Key")
+            }
+
+        })
+  }
+
+  def editProgrammingLanguage = Action.async{
+    implicit request =>
+      programmingLanguageForm.bindFromRequest.fold(
+        badForm => Future{Ok("bad form")},
+        data => {
+          val user:Option[String]=request.session.get("username")
+          val id=data.id
+          val name=data.name
+          val frequency=data.frequency
+          val language= ProgrammingLanguage(id,user.get,name,frequency)
+          val res = service.update(language)
           res.map{
             r => if(r==1) Redirect("/programming") else Ok("Bye")
           }
         })
+        }
+
+  def getProgrammingLanguageById(id:Int)= Action.async{
+    val language= service.getLanguageById(id)
+    language map { lang =>
+      val json = Json.obj(
+        "id" -> lang.get.id,
+        "name" -> lang.get.name,
+        "frequency" -> lang.get.frequency
+      )
+      Ok(json)
+    }
   }
 }

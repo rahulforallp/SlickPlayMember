@@ -16,9 +16,11 @@ POST    /processLogin               controllers.LoginController.processLogin
 
 GET     /awards                     controllers.UserController.displayAwards
 
-GET     /singleAward/:id            controllers.UserController.displayAwardById(id:Int)
+#GET     /singleAward/:id            controllers.UserController.displayAwardById(id:Int)
 
-POST     /addAward                controllers.UserController.addAward
+GET     /addAward                controllers.UserController.addAward
+
+GET     /getAwardById/:id               controllers.UserController.getAwardById(id:Int)
 
 #POST    /awards/:id/serlno/name/description/year    controllers.UserController.addAward(id:Int,serlno,name,description,year)
 
@@ -26,7 +28,17 @@ GET     /languages                  controllers.LanguageController.displayLangua
 
 GET     /addLanguage                controllers.LanguageController.addLanguage
 
+GET     /getLanguageById/:id        controllers.LanguageController.getLanguageById(id:Int)
+
 GET     /addProgrammingLanguage     controllers.ProgrammingLanguageController.addProgrammingLanguage
+
+GET     /editProgrammingLanguage     controllers.ProgrammingLanguageController.editProgrammingLanguage
+
+GET     /editLanguage               controllers.LanguageController.editLanguage
+
+GET     /editAward                  controllers.UserController.editAward
+
+GET     /getProgrammingLanguageById/:id        controllers.ProgrammingLanguageController.getProgrammingLanguageById(id:Int)
 
 GET     /assignment                  controllers.AssignmentController.displayAssignment
 

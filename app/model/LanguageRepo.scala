@@ -39,6 +39,12 @@ class LanguageRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvi
       languageTableQuery.filter(_.username===username).to[List].result
     }
   }
+
+  def getLanguageById(id:Int):Future[Option[Language]]={
+    db.run{
+      languageTableQuery.filter(_.id===id).result.headOption
+    }
+  }
 }
 
 

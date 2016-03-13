@@ -13,8 +13,10 @@
         <li><a href="#">Intern</a></li>
     </ul>
 </div>
+<p>@if(flash.get("error").isDefined){
+    @flash.get("error")}</p>
 <div class="col-md-3"></div>
-<div class="col-md-7">
+<div class="col-md-7" id="table">
 <table class="table table-striped">
     <thead>
     <tr>
@@ -32,7 +34,7 @@
         <td>@language.id</td>
         <td>@language.name</td>
         <td>@language.frequency</td>
-        <td> <button class="btn btn-default editButton"  data-id=@language.id data-toggle="modal" data-target="#edit" >
+        <td> <button class="btn btn-default editButton"  data-id="@language.id" data-toggle="modal" data-target="#edit" >
             Edit
         </button></td>
 
@@ -49,31 +51,20 @@
             <h4 class="modal-title">Programming Language Edit</h4>
         </div>
         <div class="modal-content" style="height:300px;text-align:center;">
-            <form>
-                <div>
-                    <label>Id</label>
-                    <input type="text" readonly>
-                    <br>
-                    <br>
-                    <label>Language name</label>
-                    <input type="text">
-                    <br>
-                    <br>
-                    <label>Frequency</label>
-                    <input type="text">
-                </div>
-                <div style="display:inline;">
-                    <button class="btn btn-primary" type="submit" style="padding:10px">Save</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-                </div>
-            </form>
-
+            @b3.form(action=routes.ProgrammingLanguageController.editProgrammingLanguage(),'id-> "editForm") {
+            <div>
+                <span>@b3.text(programmingLanguageForm("username"),'_label -> "",'id -> "user", 'value ->session.get("username"),'style -> "display:none")</span>
+                <span>@b3.text(programmingLanguageForm("id"),'_label -> "ID",'id -> "id",'readonly -> true)</span>
+                <span>@b3.text(programmingLanguageForm("name"),'_label -> "Name", 'id->"name")</span>
+                <span>@b3.text(programmingLanguageForm("frequency"),'_label -> "Frequency", 'id->"frequency")</span>
+            </div>
+            <button class="btn btn-primary" type="submit" style="padding:10px" id="editsave">Save</button>
+            }
         </div>
 
     </div>
 
 </div>
-
 
 <div class="modal fade" id="add" role="dialog">
     <div class="modal-dialog">
@@ -91,7 +82,55 @@
             </div>
             <button class="btn btn-primary" type="submit" style="padding:10px" id="newsave">Save</button>
             }
-            }
+
         </div>
     </div>
 </div>
+
+<script>
+    $(".editButton").click(function(){
+    var id=$(this).attr('data-id');
+    $.get("getProgrammingLanguageById/"+id, function(data,status){
+    $("#id").val(data.id);
+    $("#name").val(data.name);
+    $("#frequency").val(data.frequency);
+    });
+    });
+
+    $("#editForm").submit(function(event){
+    event.preventDefault();
+    var values= $(this).serialize();
+    $.ajax({
+    url:"editProgrammingLanguage",
+    type:"GET",
+    data:values,
+    success:function(data){
+    $("#edit").modal('hide');
+   window.location.reload();
+    }
+    });
+    });
+
+
+
+</script>
+<script>
+      $("#addForm").submit(function(event){
+    event.preventDefault();
+    var values = $(this).serialize();
+    $.ajax({
+    url:"addProgrammingLanguage",
+    type:"GET",
+    data:values,
+    success:function(data){
+    $("#add").modal('hide');
+    window.location.reload();
+    }
+     error:function(data,status){
+     $("#add").modal('hide');
+    }
+    });
+    });
+
+</script>
+}
