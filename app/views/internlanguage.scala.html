@@ -1,59 +1,39 @@
 @import model.Language
 @(languageList:List[Language],languageForm:Form[Language])(implicit message:Messages, session:Session, flash:Flash)
 @implicitFC = @{ b3.horizontal.fieldConstructor("col-md-4", "col-md-8") }
-@main("Language Form") {
-<div class="container">
-    <div class="col-md-1"></div>
-<div class="row" >
-    <div class="col-md-1"></div>
-    <div class="col-md-9" style="margin-top:15px;">
-    <ul class="nav nav-tabs">
-        <li><a href="#">Home</a></li>
-        <li><a href="awards">Award</a></li>
-        <li><a href="languages">Languages known</a></li>
-        <li><a href="assignment">Assignment</a></li>
-        <li><a href="programming">Programming</a></li>
-        <li>
-            <div>
-                @b3.form(action=routes.LoginController.logout(),'id-> "logout") {
-                <button class="btn btn-default"><span class="glyphicon glyphicon-log-out"></span>Logout</button>
-                }
-            </div>
-        </li>
-    </ul>
-</div>
-<div class="col-md-2"></div>
-<div class="col-md-10">
-<table class="table table-striped">
-    <thead>
-    <tr>
-        <th>Id</th>
-        <th>Language Known</th>
-        <th>Frequency</th>
-        <th></th>
-        <th></th>
-        <th> <button class="btn btn-primary" data-toggle="modal" data-target="#add">
-            Add
-        </button></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>@for(language <- languageList){
-        <td>@language.id</td>
-        <td>@language.name</td>
-        <td>@language.frequency</td>
-        <td> <button class="btn btn-default editButton"  data-id=@language.id data-toggle="modal" data-target="#edit" >
-            Edit
-        </button></td>
-        <td> <button class="btn btn-link deleteButton"  data-id=@language.id >
-            Delete
-        </button></td>
+@main("Intern Language Form") {
+<div class="col-md-3"></div>
+<div class="col-md-7">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Language Known</th>
+            <th>Frequency</th>
+            <th></th>
+            <th></th>
+            <th> <button class="btn btn-primary" data-toggle="modal" data-target="#add">
+                Add
+            </button></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>@for(language <- languageList){
+            <td>@language.id</td>
+            <td>@language.name</td>
+            <td>@language.frequency</td>
+            <td> <button class="btn btn-default editButton"  data-id=@language.id data-toggle="modal" data-target="#edit" >
+                Edit
+            </button></td>
+            <td> <button class="btn btn-link deleteButton"  data-id=@language.id >
+                Delete
+            </button></td>
 
-    </tr>
-    }
-    </tbody>
-</table>
-    </div>
+        </tr>
+        }
+        </tbody>
+    </table>
+</div>
 
 <div class="modal fade" id="edit" role="dialog">
     <div class="modal-dialog">
@@ -90,7 +70,7 @@
             @b3.form(action=routes.LanguageController.addLanguage(),'id-> "addForm") {
             <div>
 
-                <span>@b3.text(languageForm("username"),'_label -> "",'id -> "user", 'value ->session.get("username"),'style -> "display:none")</span>
+                <span>@b3.text(languageForm("username"),'_label -> "Username",'id -> "user")</span>
                 <span>@b3.text(languageForm("id"),'_label -> "ID",'id -> "id")</span>
                 <span>@b3.text(languageForm("name"),'_label -> "Name")</span>
                 <span>@b3.text(languageForm("frequency"),'_label -> "Frequency")</span>
@@ -133,7 +113,7 @@
     event.preventDefault();
     var values = $("#addForm").serialize();
     $.ajax({
-    url:"addLanguage",
+    url:"addLanguageByAdmin",
     type:"GET",
     data:values,
     success:function(data){

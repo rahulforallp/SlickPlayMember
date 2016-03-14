@@ -21,7 +21,12 @@ class LanguageSpec extends Specification {
 
     "get all row" in new WithApplication {
       val result = Await.result(languageRepo.getLanguage("rahul"), 2 second)
-      result === 1
+      result === List(Language(1, "rahul", "Hindi","Good"))
+    }
+
+    "get single row" in new WithApplication {
+      val result = Await.result(languageRepo.getLanguageById(1), 2 second)
+      result === Some(Language(1, "rahul", "Hindi","Good"))
     }
 
     "modify single row" in new WithApplication {

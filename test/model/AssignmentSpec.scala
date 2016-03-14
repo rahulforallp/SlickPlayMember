@@ -22,7 +22,12 @@ class AssignmentSpec extends Specification {
 
     "get all row" in new WithApplication {
       val result = Await.result(assignmentRepo.getAssignment("rahul"), 2 second)
-      result === 1
+      result === List(Assignment(1, "rahul", "Scala", "create CURD Project",10,"Good"))
+    }
+
+    "get single row" in new WithApplication {
+      val result = Await.result(assignmentRepo.getAssignmentById(1), 2 second)
+      result === Some(Assignment(1, "rahul", "Scala", "create CURD Project",10,"Good"))
     }
 
     "update single row" in new WithApplication {

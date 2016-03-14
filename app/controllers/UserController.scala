@@ -9,6 +9,7 @@ import model.{Member, AwardRepo, Award}
 import play.api.i18n.Messages.Implicits._
 import play.api.libs.concurrent.Execution.Implicits._
 import play.api.Play.current
+import play.api.mvc.Session
 
 import scala.concurrent.Future
 
@@ -37,6 +38,15 @@ class UserController @Inject()(service:AwardRepo) extends Controller{
     }
   }
 
+  def displayAwardByUser(user:String)= Action.async { implicit request =>
+    //val admin: Option[String] = request.session.get("username")
+    val awardList = service.getAward(user)
+    awardList.map { award =>
+      Ok(views.html.internaward(award, awardForm))
+
+    }
+  }
+
 //  def displayAwardById(id:Int)=Action.async { implicit request =>
 //    val user: Option[String] = request.session.get("username")
 //    val awardList = service.getAwardById(id)
@@ -57,6 +67,25 @@ class UserController @Inject()(service:AwardRepo) extends Controller{
           val description =data.description
           val year= data.year
           val award= Award(id,user.get,serialNo,name,description,year)
+          val res = service.insert(award)
+          res.map{
+            r => if(r==1) Redirect("/awards") else Ok("Bye")
+          }
+        })
+  }
+
+  def addAwardByAdmin=Action.async{
+    implicit request =>
+      awardForm.bindFromRequest.fold(
+        badForm =>Future{ Ok("Error"+badForm)},
+        data =>{
+          val user = data.username
+          val id=data.id
+          val name=data.name
+          val serialNo =data.serialNo
+          val description =data.description
+          val year= data.year
+          val award= Award(id,user,serialNo,name,description,year)
           val res = service.insert(award)
           res.map{
             r => if(r==1) Redirect("/awards") else Ok("Bye")
@@ -96,4 +125,12 @@ class UserController @Inject()(service:AwardRepo) extends Controller{
           }
         })
   }
+
+  def deleteAward(id:Int)=Action.async{ implicit request =>
+    val result = service.delete(id)
+    result.map{
+      res => if (res ==1) Redirect("/awards") else Ok("bye")
+    }
+  }
+
 }

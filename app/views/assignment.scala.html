@@ -1,19 +1,29 @@
 @import model.Assignment
-@(assignmentList:List[Assignment])
+@(assignmentList:List[Assignment])(implicit message:Messages, session:Session, flash:Flash)
+@implicitFC = @{ b3.horizontal.fieldConstructor("col-md-4", "col-md-8") }
 @main("Assignment Form") {
+<div class="container">
+    <div class="col-md-1"></div>
 <div class="row">
     <div class="col-md-1"></div>
+    <div class="col-md-9" style="margin-top:15px;">
     <ul class="nav nav-tabs">
         <li><a href="#">Home</a></li>
         <li><a href="awards">Award</a></li>
         <li><a href="languages">Languages known</a></li>
         <li><a href="assignment">Assignment</a></li>
         <li><a href="programming">Programming</a></li>
-        <li><a href="#">Intern</a></li>
+        <li>
+            <div>
+                @b3.form(action=routes.LoginController.logout(),'id-> "logout") {
+                <button class="btn btn-default"><span class="glyphicon glyphicon-log-out"></span>Logout</button>
+                }
+            </div>
+        </li>
     </ul>
 </div>
-<div class="col-md-3"></div>
-<div class="col-md-7">
+<div class="col-md-2"></div>
+<div class="col-md-10">
 <table class="table table-striped">
     <thead>
     <tr>

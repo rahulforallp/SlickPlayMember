@@ -24,6 +24,10 @@ class AwardRepoSpec extends Specification {
       result === 1
     }
 
+    "get one row" in new WithApplication {
+      val result = Await.result(awrdRepo.getAwardById(1), 2 second)
+      result === Some(Award(1,"rahul", "Do81", "Code Olympic", "First","2016"))
+
     "delete single row" in new WithApplication {
       val result = Await.result(awrdRepo.delete(1), 2 second)
       result === 1
@@ -31,7 +35,7 @@ class AwardRepoSpec extends Specification {
 
     "get all row" in new WithApplication {
       val result = Await.result(awrdRepo.getAward(("rahul")), 2 second)
-      result === 1
+      result === List()
     }
 
   }

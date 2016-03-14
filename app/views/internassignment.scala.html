@@ -1,0 +1,149 @@
+@import model.Assignment
+@(assignmentList:List[Assignment],assignmentForm:Form[Assignment])(implicit message:Messages, session:Session, flash:Flash)
+@implicitFC = @{ b3.horizontal.fieldConstructor("col-md-4", "col-md-8") }
+@main("Assignment Form") {
+<div class="col-md-3"></div>
+<div class="col-md-7">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Marks</th>
+            <th>Remarks</th>
+            <th></th>
+            <th></th>
+            <th> <button class="btn btn-primary" data-toggle="modal" data-target="#add">
+                Add
+            </button></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>@for(assignment <- assignmentList){
+            <td>@assignment.id</td>
+            <td>@assignment.name</td>
+            <td>@assignment.marks</td>
+            <td>@assignment.remarks</td>
+            <td> <button class="btn btn-default editButton"  data-id=@assignment.id data-toggle="modal" data-target="#edit" >
+                Edit
+            </button></td>
+            <td> <button class="btn btn-link deleteButton"  data-id=@assignment.id >
+                Delete
+            </button></td>
+        </tr>
+        }
+        </tbody>
+    </table>
+</div>
+<div class="modal fade" id="edit" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Assignment Edit</h4>
+        </div>
+        <div class="modal-content" style="height:300px;text-align:center;">
+            @b3.form(action=routes.AssignmentController.editAssignment(),'id-> "editForm") {
+            <div>
+                <span>@b3.text(assignmentForm("username"),'_label -> "",'id -> "user", 'value ->session.get("username"),'style -> "display:none")</span>
+                <span>@b3.text(assignmentForm("id"),'_label -> "ID",'id -> "id",'readonly -> true)</span>
+                <span>@b3.text(assignmentForm("name"),'_label -> "Name", 'id->"name")</span>
+                <span>@b3.text(assignmentForm("description"),'_label -> "Description", 'id->"description")</span>
+                <span>@b3.text(assignmentForm("marks"),'_label -> "Marks", 'id->"marks")</span>
+                <span>@b3.text(assignmentForm("Remarks"),'_label -> "Remarks", 'id->"remarks")</span>
+            </div>
+            <button class="btn btn-primary" type="submit" style="padding:10px" id="editsave">Save</button>
+            }
+        </div>
+
+    </div>
+
+</div>
+
+<div class="modal fade" id="add" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Programming Language Add</h4>
+        </div>
+        <div class="modal-content" style="height:300px;text-align:center;">
+            @b3.form(action=routes.AssignmentController.addAssignment(),'id-> "addForm") {
+            <div>
+                <span>@b3.text(assignmentForm("username"),'_label -> "Username",'id -> "user")</span>
+                <span>@b3.text(assignmentForm("id"),'_label -> "ID",'id -> "id")</span>
+                <span>@b3.text(assignmentForm("name"),'_label -> "Name", 'id->"name")</span>
+                <span>@b3.text(assignmentForm("description"),'_label -> "Description", 'id->"description")</span>
+                <span>@b3.text(assignmentForm("marks"),'_label -> "Marks", 'id->"marks")</span>
+                <span>@b3.text(assignmentForm("remarks"),'_label -> "Remarks", 'id->"remarks")</span>
+            </div>
+            <button class="btn btn-primary" type="submit" style="padding:10px" id="newsave">Save</button>
+            }
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $(".editButton").click(function(){
+    var id=$(this).attr('data-id');
+    $.get("getAssignmentById/"+id, function(data,status){
+    $("#id").val(data.id);
+    $("#name").val(data.name);
+    $("#description").val(data.description);
+    $("#marks").val(data.marks);
+    $("#remarks").val(data.remarks);
+    });
+    });
+ </script>
+<script>
+
+    $("#editForm").submit(function(event){
+    event.preventDefault();
+    var values= $(this).serialize();
+    $.ajax({
+    url:"editAssignment",
+    type:"GET",
+    data:values,
+    success:function(data){
+    $("#edit").modal('hide');
+   window.location.reload();
+    }
+    });
+    });
+
+
+
+</script>
+<script>
+      $("#addForm").submit(function(event){
+    event.preventDefault();
+    var values = $(this).serialize();
+    $.ajax({
+    url:"addAssignment",
+    type:"GET",
+    data:values,
+    success:function(data){
+    $("#add").modal('hide');
+    window.location.reload();
+    }
+     error:function(data,status){
+     $("#add").modal('hide');
+    }
+    });
+    });
+
+</script>
+<script>
+    $(".deleteButton").click(function(){
+    var id=$(this).attr('data-id');
+    alert(id);
+    $.ajax({
+    type:"POST",
+    url:"deleteAssignment/"+id,
+    success:function(data){
+    window.location.reload();
+    }
+    });
+ });
+</script>
+
+}

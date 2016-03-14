@@ -33,5 +33,50 @@ class ProgrammingLanguageControllerSpec extends PlaySpecification with Mockito {
 
     }
 
+    "add programming language" in new WithApplication {
+      val language = ProgrammingLanguage(7,"sonum","C++","Good")
+      when(service.insert(language)).thenReturn(Future(1))
+      val res = call(controller.addProgrammingLanguage, FakeRequest(GET,"/addProgrammingLanguage"))
+      status(res) must equalTo (200)
+    }
+
+
+    "add programming language by admin" in new WithApplication {
+      val language = ProgrammingLanguage(7,"sonum","C++","Good")
+      when(service.insert(language)).thenReturn(Future(1))
+      val res = call(controller.addProgrammingLanguageByAdmin, FakeRequest(GET,"/addProgrammingLanguageByAdmin"))
+      status(res) must equalTo (200)
+    }
+
+    "edit programming language" in new WithApplication {
+      val language = ProgrammingLanguage(7,"sonum","C++","Very Good")
+      when(service.update(language)).thenReturn(Future(1))
+      val res = call(controller.editProgrammingLanguage, FakeRequest(GET,"/editProgrammingLanguage"))
+      status(res) must equalTo (200)
+    }
+
+    "get programming language" in new WithApplication {
+      val language = ProgrammingLanguage(7,"sonum","C++","Very Good")
+      when(service.getLanguageById(7)).thenReturn(Future(Option(language)))
+      val res = call(controller.getProgrammingLanguageById(7), FakeRequest(GET,"/getProgrammingLanguageById"))
+      status(res) must equalTo (200)
+    }
+
+    "delete programming language" in new WithApplication {
+      val language = ProgrammingLanguage(7,"sonum","C++","Very Good")
+      when(service.delete(7)).thenReturn(Future(1))
+      val res = call(controller.deleteProgrammingLanguage(7), FakeRequest(GET,"/deleteProgrammingLanguage"))
+      status(res) must equalTo (SEE_OTHER)
+    }
+
+    "delete programming language" in new WithApplication {
+      val language = ProgrammingLanguage(7,"sonum","C++","Very Good")
+      when(service.getLanguage("sonum")).thenReturn(Future(List(language)))
+      val res = call(controller.displayProgrammingByUser("sonum"), FakeRequest(GET,"/displayProgrammingByUser"))
+      status(res) must equalTo (OK)
+    }
+
+
+
   }
 }

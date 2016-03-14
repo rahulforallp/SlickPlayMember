@@ -51,6 +51,23 @@ class LanguageController @Inject()(service:LanguageRepo) extends Controller{
         })
   }
 
+  def addLanguageByAdmin=Action.async{
+    implicit request =>
+      languageForm.bindFromRequest.fold(
+        badForm =>Future{ Ok("Error "+badForm)},
+        data =>{
+          val user:String = data.username
+          val id=data.id
+          val name=data.name
+          val frequency =data.frequency
+          val language= Language(id,user,name,frequency)
+          val res = service.insert(language)
+          res.map{
+            r => if(r==1) Redirect("/languages") else Ok("Bye")
+          }
+        })
+  }
+
   def getLanguageById(id:Int)= Action.async{
     val language= service.getLanguageById(id)
     language map { lang =>
@@ -75,9 +92,26 @@ class LanguageController @Inject()(service:LanguageRepo) extends Controller{
           val language= Language(id,user.get,name,frequency)
           val res = service.update(language)
           res.map{
-            r => if(r==1) Redirect("/programming") else Ok("Bye")
+            r => if(r==1) Redirect("/languages") else Ok("Bye")
           }
         })
+  }
+
+  def displayLanguageByUser(user:String)= Action.async { implicit request =>
+    //val admin: Option[String] = request.session.get("username")
+    val languageList = service.getLanguage(user)
+    languageList.map { lang =>
+      Ok(views.html.internlanguage(lang, languageForm))
+
+    }
+  }
+
+
+  def deleteLanguage(id:Int)=Action.async{ implicit request =>
+    val result = service.delete(id)
+    result.map{
+      res => if (res ==1) Redirect("/languages") else Ok("bye")
+    }
   }
 
 }

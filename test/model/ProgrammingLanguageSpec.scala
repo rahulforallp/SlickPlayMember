@@ -21,7 +21,7 @@ class ProgrammingLanguageSpec extends Specification {
 
     "get all row" in new WithApplication {
       val result = Await.result(languageRepo.getLanguage("rahul"), 2 second)
-      result === 1
+      result === List((ProgrammingLanguage(1, "rahul", "Scala", "Good")))
     }
 
     "update single row" in new WithApplication {

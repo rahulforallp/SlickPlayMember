@@ -1,0 +1,102 @@
+@import model.Member
+@(memberList:List[Member])(implicit message:Messages, session:Session, flash:Flash)
+@implicitFC = @{ b3.horizontal.fieldConstructor("col-md-4", "col-md-8") }
+@main("Interns page") {
+<div>
+    @b3.form(action=routes.LoginController.logout(),'id-> "logout") {
+    <button class="btn btn-primary">Logout</button>
+    }
+</div>
+<div class="row">
+    <div class="col-md-1"></div>
+    <ul class="nav nav-tabs">
+        <li><a href="#">Home</a></li>
+        <li><a href="awards">Award</a></li>
+        <li><a href="languages">Languages known</a></li>
+        <li><a href="assignment">Assignment</a></li>
+        <li><a href="programming">Programming</a></li>
+        <li><a href="interns">Intern</a></li>
+    </ul>
+</div>
+
+<div class="col-md-7">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+        <td>Intern Name</td>
+            <td></td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>@for(member <- memberList) {
+            <td>@member.username</td>
+            <td> <input type="submit" class="btn btn-link awardButton"  data-id="@member.username" value="award" >
+            </td>
+            <td> <input type="submit" class="btn btn-link languageButton"  data-id="@member.username" value="language" >
+            </td>
+            <td> <input type="submit" class="btn btn-link assignmentButton"  data-id="@member.username" value="assignment" >
+            </td>
+            <td> <input type="submit" class="btn btn-link programmingButton"  data-id="@member.username" value="programming language" >
+            </td>
+        </tr>
+        </tr>
+        }
+        </tbody>
+        </table>
+    </div>
+<div id="showAll">
+
+</div>
+<script>
+   $(".awardButton").click(function(){
+    var id=$(this).attr('data-id');
+    $.ajax({
+    type:"POST",
+    url:"displayAwardByUser/"+id,
+    success:function(data){
+
+    $("#showAll").html(data);
+    }
+    });
+    });
+</script>
+<script>
+   $(".languageButton").click(function(){
+    var id=$(this).attr('data-id');
+    $.ajax({
+    type:"POST",
+    url:"displayLanguageByUser/"+id,
+    success:function(data){
+    $("#showAll").html(data);
+    }
+    });
+    });
+</script>
+<script>
+   $(".assignmentButton").click(function(){
+    var id=$(this).attr('data-id');
+    $.ajax({
+    type:"POST",
+    url:"displayAssignmentByUser/"+id,
+    success:function(data){
+    $("#showAll").html(data);
+    }
+    });
+    });
+</script>
+<script>
+   $(".programmingButton").click(function(){
+    var id=$(this).attr('data-id');
+    $.ajax({
+    type:"POST",
+    url:"displayProgrammingByUser/"+id,
+    success:function(data){
+
+   $("#showAll").html(data);
+    }
+    });
+    });
+</script>
+
+
+}

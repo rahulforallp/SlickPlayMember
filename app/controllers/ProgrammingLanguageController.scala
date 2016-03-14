@@ -54,6 +54,24 @@ class ProgrammingLanguageController @Inject()(service:ProgrammingLanguageRepo) e
         })
   }
 
+  def addProgrammingLanguageByAdmin=Action.async{
+    implicit request =>
+      programmingLanguageForm.bindFromRequest.fold(
+        badForm =>Future{ Ok("Error "+badForm)},
+        data =>{
+          val user:String = data.username
+          val id=data.id
+          val name=data.name
+          val frequency =data.frequency
+          val language= ProgrammingLanguage(id,user,name,frequency)
+          val res = service.insert(language)
+          res.map {
+            r => if (r == 1) Redirect("/programming") else Redirect("/programming").flashing("error" -> "Duplicate Key")
+          }
+
+        })
+  }
+
   def editProgrammingLanguage = Action.async{
     implicit request =>
       programmingLanguageForm.bindFromRequest.fold(
@@ -82,4 +100,21 @@ class ProgrammingLanguageController @Inject()(service:ProgrammingLanguageRepo) e
       Ok(json)
     }
   }
+
+  def deleteProgrammingLanguage(id:Int)=Action.async{ implicit request =>
+    val result = service.delete(id)
+    result.map{
+      res => print(res); if (res ==1) Redirect("/programming") else Ok("bye")
+    }
+  }
+  def displayProgrammingByUser(user:String)= Action.async { implicit request =>
+    //val admin: Option[String] = request.session.get("username")
+    val languageList = service.getLanguage(user)
+    languageList.map { lang =>
+      Ok(views.html.internprogramming(lang, programmingLanguageForm))
+
+    }
+  }
+
+
 }

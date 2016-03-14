@@ -10,7 +10,16 @@
     <li><a href="languages">Languages known</a></li>
     <li><a href="assignment">Assignment</a></li>
     <li><a href="programming">Programming</a></li>
-    <li><a href="#">Intern</a></li>
+    @if(str=="admin"){
+    <li><a href="interns">Intern</a></li>}
+    <li>
+        <div>
+            @b3.form(action=routes.LoginController.logout(),'id-> "logout") {
+            <button class="btn btn-default"><span class="glyphicon glyphicon-log-out"></span>Logout</button>
+            }
+        </div>
+    </li>
+
 </ul>
 </div>
     }

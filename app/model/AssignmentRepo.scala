@@ -36,6 +36,13 @@ class AssignmentRepo @Inject()(protected val dbConfigProvider: DatabaseConfigPro
       assignmentTableQuery.filter(_.username===username).to[List].result
     }
   }
+
+  def getAssignmentById(id:Int):Future[Option[Assignment]]={
+    db.run{
+      assignmentTableQuery.filter(_.id===id).result.headOption
+    }
+  }
+
 }
 
 
@@ -44,7 +51,7 @@ trait AssignmentTable  { self: HasDatabaseConfigProvider[JdbcProfile] =>
   import driver.api._
 
   protected class AssignmentTable(tag: Tag) extends Table[Assignment](tag, "assignment") {
-    val id: Rep[Int] = column[Int]("id", O.AutoInc,O.PrimaryKey)
+    val id: Rep[Int] = column[Int]("id",O.PrimaryKey)
     val username: Rep[String] = column[String]("username", O.SqlType("VARCHAR(200)"))
     val name: Rep[String] = column[String]("name",O.SqlType("VARCHAR(200)"))
     val description: Rep[String] = column[String]("description",O.SqlType("VARCHAR(200)"))

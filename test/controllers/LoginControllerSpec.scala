@@ -34,7 +34,7 @@ class LoginControllerSpec extends PlaySpecification with Mockito{
 
     "username is correct " in new WithApplication{
 
-      when(service.getMember("sonum","sonu")).thenReturn(Future(Some(Member("sonum","sonu"))))
+      when(service.getMember("sonum","sonu")).thenReturn(Future(Some(Member("sonum","sonu","user"))))
       val res=call(controller.processLogin,FakeRequest(GET,"/processLogin"))
       status(res) must equalTo(OK)
     }
@@ -43,7 +43,21 @@ class LoginControllerSpec extends PlaySpecification with Mockito{
 
       when(service.getMember("sonum","sonueee")).thenReturn(Future(None))
       val res=call(controller.processLogin,FakeRequest(GET,"/processLogin"))
-      status(res) must equalTo(303)
+      status(res) must equalTo(200)
     }
+
+    "list all members" in new WithApplication{
+
+      when(service.getAllMember).thenReturn(Future(List(Member("sonum","sonu","user"),Member("diksha","dikki","admin"))))
+      val res=call(controller.listAllMember,FakeRequest(GET,"/listAllMember"))
+      status(res) must equalTo(200)
+    }
+
+    "list all members" in new WithApplication{
+      val res=call(controller.logout,FakeRequest(GET,"/logout"))
+      status(res) must equalTo(200)
+    }
+
+
   }
 }

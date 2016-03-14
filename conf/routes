@@ -20,6 +20,8 @@ GET     /awards                     controllers.UserController.displayAwards
 
 GET     /addAward                controllers.UserController.addAward
 
+GET     /addAwardByAdmin                    controllers.UserController.addAwardByAdmin
+
 GET     /getAwardById/:id               controllers.UserController.getAwardById(id:Int)
 
 #POST    /awards/:id/serlno/name/description/year    controllers.UserController.addAward(id:Int,serlno,name,description,year)
@@ -28,21 +30,54 @@ GET     /languages                  controllers.LanguageController.displayLangua
 
 GET     /addLanguage                controllers.LanguageController.addLanguage
 
+GET     /addLanguageByAdmin                controllers.LanguageController.addLanguageByAdmin
+
 GET     /getLanguageById/:id        controllers.LanguageController.getLanguageById(id:Int)
 
 GET     /addProgrammingLanguage     controllers.ProgrammingLanguageController.addProgrammingLanguage
 
+GET     /addProgrammingLanguageByAdmin     controllers.ProgrammingLanguageController.addProgrammingLanguageByAdmin
+
 GET     /editProgrammingLanguage     controllers.ProgrammingLanguageController.editProgrammingLanguage
+
+POST     /deleteProgrammingLanguage/:id      controllers.ProgrammingLanguageController.deleteProgrammingLanguage(id:Int)
 
 GET     /editLanguage               controllers.LanguageController.editLanguage
 
+POST     /deleteLanguage/:id      controllers.LanguageController.deleteLanguage(id:Int)
+
 GET     /editAward                  controllers.UserController.editAward
+
+POST     /deleteAward/:id      controllers.UserController.deleteAward(id:Int)
 
 GET     /getProgrammingLanguageById/:id        controllers.ProgrammingLanguageController.getProgrammingLanguageById(id:Int)
 
 GET     /assignment                  controllers.AssignmentController.displayAssignment
 
+GET     /getAssignmentById/:id        controllers.AssignmentController.getAssignmentById(id:Int)
+
+GET     /editAssignment                controllers.AssignmentController.editAssignment
+
+GET     /addAssignment      controllers.AssignmentController.addAssignment
+
+POST     /deleteAssignment/:id      controllers.AssignmentController.deleteAssignment(id:Int)
+
 GET     /programming                 controllers.ProgrammingLanguageController.displayProgrammingLanguages
+
+GET     /logout                         controllers.LoginController.logout
+
+GET     /interns              controllers.LoginController.listAllMember
+
+POST     /displayAwardByUser/:id     controllers.UserController.displayAwardByUser(id)
+
+POST     /displayLanguageByUser/:id     controllers.LanguageController.displayLanguageByUser(id)
+
+POST     /displayAssignmentByUser/:id     controllers.AssignmentController.displayAssignmentByUser(id)
+
+POST     /displayProgrammingByUser/:id     controllers.ProgrammingLanguageController.displayProgrammingByUser(id)
+
+
+
 
 #GET   /ajax-call          controllers.LoginController.ajaxCall
 
